@@ -161,6 +161,10 @@ enum CautionFlag: String, Codable, Sendable, Hashable {
     case coldBattery
     case sustainedWindHigh
     case fpvGustBand
+    /// Above the pilot's own humidity threshold — caps the verdict at CAUTION.
+    case humidityOverLimit
+    /// Above the pilot's own rain-chance threshold — caps the verdict at CAUTION.
+    case rainChanceOverLimit
 
     var label: String {
         switch self {
@@ -168,6 +172,8 @@ enum CautionFlag: String, Codable, Sendable, Hashable {
         case .coldBattery:       return "Cold LiPo — hover 30–60 s, expect shorter flights"
         case .sustainedWindHigh: return "Sustained wind near limit"
         case .fpvGustBand:       return "Gusty for low-altitude acro"
+        case .humidityOverLimit:   return "Humidity over your limit"
+        case .rainChanceOverLimit: return "Rain chance over your limit"
         }
     }
 }

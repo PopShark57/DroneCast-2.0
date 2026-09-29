@@ -13,6 +13,10 @@
 //  Verdict bands: GO ≥ 75 with no caution flags · CAUTION 50–74 or any
 //  flag · NO-GO < 50 or any gate.
 //
+//  The pilot's humidity and rain-chance thresholds are limits, not just
+//  weights: going above either raises a caution flag, so a day over your
+//  own limit can never score GO.
+//
 
 import Foundation
 
@@ -70,6 +74,14 @@ struct FlightScorer: Sendable {
         if let band = profile.fpvCautionGustMph,
            c.gustMph >= band, c.gustMph < gustLimit {
             flags.append(.fpvGustBand)
+        }
+        // Exactly at the threshold is still flyable (it already costs the
+        // factor's full weight); above it is over the pilot's own limit.
+        if c.humidityPercent > thresholds.maxHumidityPercent {
+            flags.append(.humidityOverLimit)
+        }
+        if c.precipChancePercent > thresholds.maxPrecipChancePercent {
+            flags.append(.rainChanceOverLimit)
         }
 
         // ---- Stage 2: weighted factors -------------------------------
@@ -216,19 +228,31 @@ struct FlightScorer: Sendable {
                 return "\(Int(c.tempF.rounded()))°F outside \(profile.shortName) operating range"
             }
         }
-        if verdict == .go {
-            return "All factors within your limits"
+        /// "nearing 30% limit", "at your 30% limit", "over your 30% limit".
+        func relation(_ value: Double, _ limit: Double) -> String {
+            value > limit ? "over your" : value == limit ? "at your" : "nearing"
         }
         // Lowest-credit factor drives the message.
         let ranked: [(String, Double)] = [
             ("Gusts \(Self.mph(c.gustMph)) mph nearing \(Self.mph(gustLimit)) mph limit", credits.gust),
             ("Sustained wind \(Self.mph(c.windMph)) mph elevated", credits.wind),
-            ("Rain chance \(Int(c.precipChancePercent))% nearing \(Int(thresholds.maxPrecipChancePercent))% limit", credits.precip),
-            ("Humidity \(Int(c.humidityPercent))% nearing \(Int(thresholds.maxHumidityPercent))% limit", credits.humidity),
+            ("Rain chance \(Int(c.precipChancePercent))% "
+                + "\(relation(c.precipChancePercent, thresholds.maxPrecipChancePercent)) "
+                + "\(Int(thresholds.maxPrecipChancePercent))% limit", credits.precip),
+            ("Humidity \(Int(c.humidityPercent))% "
+                + "\(relation(c.humidityPercent, thresholds.maxHumidityPercent)) "
+                + "\(Int(thresholds.maxHumidityPercent))% limit", credits.humidity),
             ("Temperature \(Int(c.tempF.rounded()))°F outside the comfort band", credits.temp),
             ("Low ceiling / reduced visibility", credits.sky),
         ]
-        if let worst = ranked.min(by: { $0.1 < $1.1 }), worst.1 < 0.999 {
+        let worst = ranked.min(by: { $0.1 < $1.1 })
+        if verdict == .go {
+            // GO can still sit exactly on a limit (e.g. humidity 75% with a
+            // 75% threshold) — name it rather than claim everything is within.
+            if let worst, worst.1 <= 0 { return worst.0 }
+            return "All factors within your limits"
+        }
+        if let worst, worst.1 < 0.999 {
             return worst.0
         }
         return flags.first?.label ?? "Marginal conditions"

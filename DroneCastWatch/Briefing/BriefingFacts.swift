@@ -153,6 +153,10 @@ extension BriefingFacts {
         if let gate = verdict.gates.first { return gate.briefingReason }
         switch verdict.verdict {
         case .go:
+            // GO can sit exactly on a limit — don't call that "within".
+            if let atLimit = verdict.factors.first(where: { $0.status == .fail }) {
+                return "\(atLimit.name.lowercased()) at limit"
+            }
             return "within your limits"
         case .caution, .noGo:
             if let flag = verdict.flags.first, verdict.score >= 50 {
@@ -238,6 +242,8 @@ extension CautionFlag {
         case .coldBattery:       return "cold battery"
         case .sustainedWindHigh: return "sustained wind high"
         case .fpvGustBand:       return "gusty for FPV"
+        case .humidityOverLimit:   return "humidity over limit"
+        case .rainChanceOverLimit: return "rain chance over limit"
         }
     }
 }

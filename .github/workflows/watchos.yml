@@ -49,6 +49,7 @@ jobs:
             -scheme DroneCastWatch \
             -destination "$DESTINATION" \
             -resultBundlePath TestResults.xcresult \
+            -collect-test-diagnostics never \
             CODE_SIGNING_ALLOWED=NO
 
       - name: Upload test results

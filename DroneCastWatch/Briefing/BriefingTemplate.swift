@@ -45,7 +45,9 @@ enum BriefingTemplate {
         let factor = trimmed(facts.primaryFactor)
         switch facts.verdict {
         case .go:
-            return "\(name): all factors within your limits, score \(facts.score). "
+            // "all factors within your limits" on a normal GO day; the
+            // engine names the factor instead when one sits on its limit.
+            return "\(name): \(lowercasingFirst(factor)), score \(facts.score). "
                 + "Gusts \(facts.wind.gustMph) mph against a \(facts.wind.gustLimitMph) mph limit."
         case .caution:
             return "\(name): marginal, score \(facts.score). \(factor)."
@@ -63,6 +65,11 @@ enum BriefingTemplate {
             return "Forecast window \(window), alert not included"
         }
         return "Best window \(window)"
+    }
+
+    private static func lowercasingFirst(_ text: String) -> String {
+        guard let first = text.first else { return text }
+        return first.lowercased() + text.dropFirst()
     }
 
     private static func trimmed(_ sentence: String) -> String {

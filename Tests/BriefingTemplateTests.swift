@@ -91,6 +91,11 @@ struct BriefingTemplateTests {
             { $0.humidityPercent = 90; $0.tempC = 5 },
             { $0.windMph = 15; $0.gustMph = 15 },
             { $0.severeAlert = "Wind Advisory" },
+            { $0.humidityPercent = 75 },
+            { $0.humidityPercent = 80 },
+            { $0.precipChancePercent = 30 },
+            { $0.precipChancePercent = 35 },
+            { $0.humidityPercent = 80; $0.precipChancePercent = 35 },
         ]
         for mutate in cases {
             let snapshot = Fixture.conditions(mutate)
@@ -102,6 +107,27 @@ struct BriefingTemplateTests {
             #expect(HallucinationGuard.violations(in: draft, for: facts) == [],
                     "\(profile.id): \(draft)")
         }
+    }
+
+    @Test func humidityOverLimitBriefsCautionNotWithinLimits() {
+        // Regression: the briefing used to read "GO · within your limits".
+        let facts = Fixture.facts(.go, mutate: { $0.humidityPercent = 80 })
+        let draft = BriefingTemplate.draft(for: facts)
+        #expect(facts.verdict == .caution)
+        #expect(draft.headline == "CAUTION · humidity over limit")
+        #expect(draft.detail.hasSuffix("Humidity 80% over your 75% limit."))
+        #expect(!draft.detail.contains("within your limits"))
+        #expect(HallucinationGuard.violations(in: draft, for: facts) == [])
+    }
+
+    @Test func goAtALimitNamesItInsteadOfWithinLimits() {
+        let facts = Fixture.facts(.go, mutate: { $0.humidityPercent = 75 })
+        let draft = BriefingTemplate.draft(for: facts)
+        #expect(facts.verdict == .go)
+        #expect(draft.headline == "GO · humidity at limit")
+        #expect(draft.detail.hasPrefix("DJI Neo 2: humidity 75% at your 75% limit, score "))
+        #expect(!draft.headline.contains("within"))
+        #expect(HallucinationGuard.violations(in: draft, for: facts) == [])
     }
 
     @Test func templateBriefingIsMarkedAsTemplate() {
