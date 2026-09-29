@@ -23,6 +23,8 @@ struct PersistedState: Codable, Sendable {
     var hourlyVerdicts: [HourVerdict]
     var profileID: String
     var thresholds: UserThresholds
+    /// Added in 2.0. Optional so 1.0 state still decodes (missing → on).
+    var aiBriefingEnabled: Bool? = nil
 }
 
 enum SharedStore {

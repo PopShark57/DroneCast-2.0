@@ -29,6 +29,34 @@
 		CF0876A3C0B43E7DC4D05778 /* FlightScorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1F58DCD8598041EF380EB2 /* FlightScorer.swift */; };
 		D9ADD72B452E195F0D566A63 /* VerdictView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A142C3C0091A3E62D48DDA /* VerdictView.swift */; };
 		F9887B14718832B6785C2696 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A4E7B6505B0AFF76FEE58E /* RootTabView.swift */; };
+		FA6EE3B35D6E84454C233071 /* Briefing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFCE0233B08E5296191479F /* Briefing.swift */; };
+		BC60A1FEB30EC3150FD76E83 /* Briefing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFCE0233B08E5296191479F /* Briefing.swift */; };
+		89685CFD595A6FE4E84F5250 /* Briefing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFCE0233B08E5296191479F /* Briefing.swift */; };
+		913C57350B78B2AC26A7B337 /* BriefingAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D10F196FE251FA16B730FB8 /* BriefingAnswer.swift */; };
+		0B48690FAB31A82CBC429901 /* BriefingAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D10F196FE251FA16B730FB8 /* BriefingAnswer.swift */; };
+		5CF4147A8EAF52DF820DE9DB /* BriefingAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D10F196FE251FA16B730FB8 /* BriefingAnswer.swift */; };
+		102B2BE3FB0038333445A96D /* BriefingFacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC46FA177B9D92D037452D89 /* BriefingFacts.swift */; };
+		1876E9B7AFC23A179524B817 /* BriefingFacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC46FA177B9D92D037452D89 /* BriefingFacts.swift */; };
+		B9F7CBEF7E1655364E758830 /* BriefingFacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC46FA177B9D92D037452D89 /* BriefingFacts.swift */; };
+		7C70A1010E585F1920E46FC5 /* BriefingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447078DF0A0CAE89BD41C682 /* BriefingService.swift */; };
+		4915AA3C780B3C68604CDC7E /* BriefingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447078DF0A0CAE89BD41C682 /* BriefingService.swift */; };
+		C8801A04A1458B267285C044 /* BriefingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447078DF0A0CAE89BD41C682 /* BriefingService.swift */; };
+		E6141EE1BDD42DF328C726B5 /* BriefingTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC667E58DBC67394612F330 /* BriefingTemplate.swift */; };
+		8CCF475CE169F54707E2F14F /* BriefingTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC667E58DBC67394612F330 /* BriefingTemplate.swift */; };
+		5158FB4E14A7166458CB4C30 /* BriefingTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC667E58DBC67394612F330 /* BriefingTemplate.swift */; };
+		2A18FE3CFE1B5A60002BF679 /* HallucinationGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E11BA78091A817DC19386FF /* HallucinationGuard.swift */; };
+		62295102ED538F9D79AE285A /* HallucinationGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E11BA78091A817DC19386FF /* HallucinationGuard.swift */; };
+		738A7F3AE0BCD1CB7E5616D2 /* HallucinationGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E11BA78091A817DC19386FF /* HallucinationGuard.swift */; };
+		323FD7411431485C0B63C07F /* PCCBriefingGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F874092663B6630E1C7576C /* PCCBriefingGenerator.swift */; };
+		7166AC62BC0C79B015505D7D /* BriefingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B8E87E65F9CF7C6FFB7FF1 /* BriefingCardView.swift */; };
+		08D7DEAC5BDBD3DC65A8FF6A /* CanIFlyIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD97C37A111552390DAFC9C /* CanIFlyIntent.swift */; };
+		C9DB9B67EC156E479FAEBC0F /* BriefingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F845B057E18D1320150887 /* BriefingWidget.swift */; };
+		A077A25388F187808E9BECED /* BriefingFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2BB37C38560DAC1EA1A84E /* BriefingFixtures.swift */; };
+		F6750FCC05DE36AA4B77A547 /* BriefingFactsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F909339A51F97305E91BFD23 /* BriefingFactsTests.swift */; };
+		E411D0D670D30EF97C485B7D /* BriefingTemplateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3454E501981604973256F16F /* BriefingTemplateTests.swift */; };
+		4420B97F262672EAC75FE63E /* HallucinationGuardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DC7FF4AC563249032FAF9F /* HallucinationGuardTests.swift */; };
+		DB7BE8A4FC87120A712D9197 /* BriefingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B52A92E5F020ECA239572B5 /* BriefingServiceTests.swift */; };
+		134013204ADD64294CA59022 /* SharedDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4EB9C0817A68ECAD6E5AED /* SharedDefaults.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,12 +107,28 @@
 		DE5D848C4AD915338885620E /* FactorListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactorListView.swift; sourceTree = "<group>"; };
 		F2A142C3C0091A3E62D48DDA /* VerdictView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerdictView.swift; sourceTree = "<group>"; };
 		F5B7EF5F3D2C91B04638141E /* DroneCastApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroneCastApp.swift; sourceTree = "<group>"; };
+		8EFCE0233B08E5296191479F /* Briefing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Briefing.swift; sourceTree = "<group>"; };
+		7D10F196FE251FA16B730FB8 /* BriefingAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingAnswer.swift; sourceTree = "<group>"; };
+		FC46FA177B9D92D037452D89 /* BriefingFacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingFacts.swift; sourceTree = "<group>"; };
+		447078DF0A0CAE89BD41C682 /* BriefingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingService.swift; sourceTree = "<group>"; };
+		CAC667E58DBC67394612F330 /* BriefingTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingTemplate.swift; sourceTree = "<group>"; };
+		9E11BA78091A817DC19386FF /* HallucinationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HallucinationGuard.swift; sourceTree = "<group>"; };
+		4F874092663B6630E1C7576C /* PCCBriefingGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PCCBriefingGenerator.swift; sourceTree = "<group>"; };
+		93B8E87E65F9CF7C6FFB7FF1 /* BriefingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingCardView.swift; sourceTree = "<group>"; };
+		DAD97C37A111552390DAFC9C /* CanIFlyIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanIFlyIntent.swift; sourceTree = "<group>"; };
+		10F845B057E18D1320150887 /* BriefingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingWidget.swift; sourceTree = "<group>"; };
+		3B2BB37C38560DAC1EA1A84E /* BriefingFixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingFixtures.swift; sourceTree = "<group>"; };
+		F909339A51F97305E91BFD23 /* BriefingFactsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingFactsTests.swift; sourceTree = "<group>"; };
+		3454E501981604973256F16F /* BriefingTemplateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingTemplateTests.swift; sourceTree = "<group>"; };
+		F7DC7FF4AC563249032FAF9F /* HallucinationGuardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HallucinationGuardTests.swift; sourceTree = "<group>"; };
+		3B52A92E5F020ECA239572B5 /* BriefingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefingServiceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		3DAA7152AD721579F4A7F531 /* DroneCastWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				10F845B057E18D1320150887 /* BriefingWidget.swift */,
 				2C253EF6C5CBF79DC0AC209F /* DroneCastWidgets.entitlements */,
 				0E25225638BF67474D894FA4 /* DroneCastWidgets.swift */,
 				D137B3E390DB017FF21D3168 /* Info.plist */,
@@ -95,6 +139,7 @@
 		4AA9C479BDB9F940FAF49861 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				93B8E87E65F9CF7C6FFB7FF1 /* BriefingCardView.swift */,
 				DE5D848C4AD915338885620E /* FactorListView.swift */,
 				59A4E7B6505B0AFF76FEE58E /* RootTabView.swift */,
 				BA297C655351CE043FD97D80 /* SettingsView.swift */,
@@ -124,6 +169,7 @@
 		705F57F74CEF145A1F087F54 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				4F874092663B6630E1C7576C /* PCCBriefingGenerator.swift */,
 				3886C5FE3315086B84197F66 /* LocationService.swift */,
 				A1979E833691D6ABC5DDED9B /* WeatherKitProvider.swift */,
 				946E57D732C5BF1784928748 /* WeatherProviding.swift */,
@@ -163,7 +209,9 @@
 				68D2B5BEC29D1C98C6BC3313 /* DroneCastWatch.entitlements */,
 				0B199556DF1C2EF16705A70C /* Info.plist */,
 				5B1652498346096332083E5E /* App */,
+				C40088A8F7E1FACF26921405 /* Briefing */,
 				6CA01155DD613BCDA5EAB1CA /* Domain */,
+				DA0395CFBE866B6B2F5D907A /* Intents */,
 				70EF8E5DD274D9ECE0C1EA68 /* Model */,
 				C6ECD8EEA39BA01B4A188DDB /* Persistence */,
 				F8DFDB3709F11FF4E5DC9CF1 /* Resources */,
@@ -186,6 +234,11 @@
 		F43F123F28FD9997F0D9F8D1 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				3B2BB37C38560DAC1EA1A84E /* BriefingFixtures.swift */,
+				F909339A51F97305E91BFD23 /* BriefingFactsTests.swift */,
+				3454E501981604973256F16F /* BriefingTemplateTests.swift */,
+				F7DC7FF4AC563249032FAF9F /* HallucinationGuardTests.swift */,
+				3B52A92E5F020ECA239572B5 /* BriefingServiceTests.swift */,
 				1E0A9ABA811C40EE85C451AE /* FlightScorerTests.swift */,
 			);
 			path = Tests;
@@ -197,6 +250,27 @@
 				B0097A8AE33E2B71FD5A2D69 /* Assets.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		C40088A8F7E1FACF26921405 /* Briefing */ = {
+			isa = PBXGroup;
+			children = (
+				8EFCE0233B08E5296191479F /* Briefing.swift */,
+				7D10F196FE251FA16B730FB8 /* BriefingAnswer.swift */,
+				FC46FA177B9D92D037452D89 /* BriefingFacts.swift */,
+				447078DF0A0CAE89BD41C682 /* BriefingService.swift */,
+				CAC667E58DBC67394612F330 /* BriefingTemplate.swift */,
+				9E11BA78091A817DC19386FF /* HallucinationGuard.swift */,
+			);
+			path = Briefing;
+			sourceTree = "<group>";
+		};
+		DA0395CFBE866B6B2F5D907A /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				DAD97C37A111552390DAFC9C /* CanIFlyIntent.swift */,
+			);
+			path = Intents;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -302,6 +376,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89685CFD595A6FE4E84F5250 /* Briefing.swift in Sources */,
+				5CF4147A8EAF52DF820DE9DB /* BriefingAnswer.swift in Sources */,
+				B9F7CBEF7E1655364E758830 /* BriefingFacts.swift in Sources */,
+				C8801A04A1458B267285C044 /* BriefingService.swift in Sources */,
+				5158FB4E14A7166458CB4C30 /* BriefingTemplate.swift in Sources */,
+				738A7F3AE0BCD1CB7E5616D2 /* HallucinationGuard.swift in Sources */,
+				A077A25388F187808E9BECED /* BriefingFixtures.swift in Sources */,
+				F6750FCC05DE36AA4B77A547 /* BriefingFactsTests.swift in Sources */,
+				E411D0D670D30EF97C485B7D /* BriefingTemplateTests.swift in Sources */,
+				4420B97F262672EAC75FE63E /* HallucinationGuardTests.swift in Sources */,
+				DB7BE8A4FC87120A712D9197 /* BriefingServiceTests.swift in Sources */,
+				134013204ADD64294CA59022 /* SharedDefaults.swift in Sources */,
 				6450C2AC6E24EBBF928216E5 /* FlightScorer.swift in Sources */,
 				41EA427C3C2F34DB1B3A45E4 /* FlightScorerTests.swift in Sources */,
 				0633B0246640E35627481764 /* Models.swift in Sources */,
@@ -312,6 +398,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA6EE3B35D6E84454C233071 /* Briefing.swift in Sources */,
+				913C57350B78B2AC26A7B337 /* BriefingAnswer.swift in Sources */,
+				102B2BE3FB0038333445A96D /* BriefingFacts.swift in Sources */,
+				7C70A1010E585F1920E46FC5 /* BriefingService.swift in Sources */,
+				E6141EE1BDD42DF328C726B5 /* BriefingTemplate.swift in Sources */,
+				2A18FE3CFE1B5A60002BF679 /* HallucinationGuard.swift in Sources */,
+				323FD7411431485C0B63C07F /* PCCBriefingGenerator.swift in Sources */,
+				7166AC62BC0C79B015505D7D /* BriefingCardView.swift in Sources */,
+				08D7DEAC5BDBD3DC65A8FF6A /* CanIFlyIntent.swift in Sources */,
 				5536C49F2487152AAF4EC76E /* DroneCastApp.swift in Sources */,
 				AF2848DB9E76358689D7BA3D /* FactorListView.swift in Sources */,
 				2803A6CD847F4A64AE6CEF00 /* FlightScorer.swift in Sources */,
@@ -332,6 +427,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC60A1FEB30EC3150FD76E83 /* Briefing.swift in Sources */,
+				0B48690FAB31A82CBC429901 /* BriefingAnswer.swift in Sources */,
+				1876E9B7AFC23A179524B817 /* BriefingFacts.swift in Sources */,
+				4915AA3C780B3C68604CDC7E /* BriefingService.swift in Sources */,
+				8CCF475CE169F54707E2F14F /* BriefingTemplate.swift in Sources */,
+				62295102ED538F9D79AE285A /* HallucinationGuard.swift in Sources */,
+				C9DB9B67EC156E479FAEBC0F /* BriefingWidget.swift in Sources */,
 				C0FE774EDC2A44C96B278461 /* DroneCastWidgets.swift in Sources */,
 				CF0876A3C0B43E7DC4D05778 /* FlightScorer.swift in Sources */,
 				A1CB78795E2C5FDA9C76D4CD /* Models.swift in Sources */,
@@ -470,7 +572,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -480,7 +582,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
-				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 			};
 			name = Debug;
 		};
@@ -566,7 +668,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -575,7 +677,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 6.0;
-				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 			};
 			name = Release;
 		};

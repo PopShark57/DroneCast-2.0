@@ -15,6 +15,7 @@ import SwiftUI
 struct DroneCastWidgetBundle: WidgetBundle {
     var body: some Widget {
         VerdictWidget()
+        BriefingWidget()
     }
 }
 

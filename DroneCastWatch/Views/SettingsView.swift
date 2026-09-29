@@ -3,7 +3,8 @@
 //  DroneCast — Views
 //
 //  Aircraft selection (with the effective gust clamp shown live),
-//  threshold editing, and the pilot-in-command disclaimer.
+//  threshold editing, the AI Briefing toggle, and the pilot-in-command
+//  disclaimer.
 //
 //  Note: SwiftUI Stepper doesn't exist on watchOS, hence ThresholdAdjuster.
 //
@@ -64,6 +65,22 @@ struct SettingsView: View {
                     store.thresholds = .standard
                 }
                 .font(.caption)
+            }
+
+            Section {
+                Toggle(isOn: $store.aiBriefingEnabled) {
+                    Text("AI Briefing").font(.caption)
+                }
+                Text(store.briefingStatusText)
+                    .font(.system(size: 10))
+                    .foregroundStyle(.secondary)
+            } header: {
+                Text("Briefing")
+            } footer: {
+                Text("The go/no-go verdict always comes from DroneCast's scoring engine. "
+                     + "AI only rewords it; any text that changes a number or the verdict "
+                     + "is discarded for the template.")
+                    .font(.system(size: 9))
             }
 
             Section("About") {

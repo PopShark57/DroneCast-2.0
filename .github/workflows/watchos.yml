@@ -1,0 +1,60 @@
+name: watchOS build & test
+
+# Builds the app, widget extension and tests for the watchOS 27 simulator
+# and runs the Swift Testing suite. Simulator-only: no signing, no
+# WeatherKit, no Private Cloud Compute — the model layer is mocked in tests.
+
+on:
+  push:
+    branches: [main, "claude/**"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: watchos-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DESTINATION: "platform=watchOS Simulator,name=Apple Watch Series 12 (46mm),OS=27.0"
+
+jobs:
+  build-and-test:
+    # GitHub's Xcode 27 image (public preview at the time of writing).
+    runs-on: xcode-27
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode 27.0
+        run: sudo xcode-select -s /Applications/Xcode_27.app
+
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          xcrun simctl list devices available | grep -i "watch" || true
+
+      - name: Build (app + widgets)
+        run: |
+          xcodebuild build \
+            -project DroneCast.xcodeproj \
+            -scheme DroneCastWatch \
+            -destination "$DESTINATION" \
+            -quiet \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Test
+        run: |
+          xcodebuild test \
+            -project DroneCast.xcodeproj \
+            -scheme DroneCastWatch \
+            -destination "$DESTINATION" \
+            -resultBundlePath TestResults.xcresult \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestResults
+          path: TestResults.xcresult
+          if-no-files-found: ignore

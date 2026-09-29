@@ -4,7 +4,8 @@
 //
 //  Single @Observable source of truth. Fetch pipeline:
 //  location → provider (WeatherKit, Open-Meteo fallback) → score →
-//  persist snapshot → reload widget timelines.
+//  briefing (template now, model later) → persist snapshot → reload
+//  widget timelines.
 //
 
 import SwiftUI
@@ -36,6 +37,10 @@ final class FlightStore {
     /// Set when a refresh fails while older data is still on screen. Without
     /// it the app silently kept showing stale numbers as if nothing happened.
     private(set) var lastRefreshError: String?
+    /// Plain-English briefing of the current verdict. Always present when a
+    /// verdict is: the template appears immediately, and a guard-approved
+    /// model version may replace it moments later.
+    private(set) var briefing: Briefing?
 
     var selectedProfile: DroneProfile {
         didSet {
@@ -53,6 +58,15 @@ final class FlightStore {
         }
     }
 
+    /// Settings toggle. Off → template briefings only, no model calls.
+    var aiBriefingEnabled: Bool {
+        didSet {
+            guard oldValue != aiBriefingEnabled else { return }
+            updateBriefing(allowModel: true)
+            persist()
+        }
+    }
+
     // MARK: Dependencies
 
     /// The app-wide instance. The SwiftUI scene and the background-refresh
@@ -63,11 +77,15 @@ final class FlightStore {
     private let provider: any WeatherProviding
     private let fallback: (any WeatherProviding)?
     private let locationService = LocationService()
+    private let briefingService: BriefingService
     private var refreshTask: Task<Void, Never>?
     private var widgetReloadTask: Task<Void, Never>?
+    private var briefingTask: Task<Void, Never>?
+    private var briefingTaskFacts: BriefingFacts?
 
     init(provider: (any WeatherProviding)? = nil,
-         fallback: (any WeatherProviding)? = nil) {
+         fallback: (any WeatherProviding)? = nil,
+         briefingGenerator: (any BriefingGenerating)? = nil) {
         // Open-Meteo is primary on free personal teams (WeatherKit needs
         // the paid Developer Program). Flip WeatherConfig.preferWeatherKit
         // after joining.
@@ -81,6 +99,13 @@ final class FlightStore {
             WeatherConfig.preferWeatherKit ? OpenMeteoProvider() : nil
         self.fallback = fallback ?? defaultFallback
 
+        // Same pattern as WeatherKit: the Private Cloud Compute model needs
+        // an entitlement personal teams can't get, so it's compiled out by
+        // default and every briefing is the deterministic template.
+        let defaultGenerator: (any BriefingGenerating)? =
+            BriefingConfig.useCloudModel ? PCCBriefingGenerator() : nil
+        self.briefingService = BriefingService(generator: briefingGenerator ?? defaultGenerator)
+
         // Warm-start from the persisted snapshot (didSet doesn't fire in init).
         let saved = SharedStore.load()
         selectedProfile = DroneProfile.profile(id: saved?.profileID ?? DroneProfile.neo2.id)
@@ -89,7 +114,9 @@ final class FlightStore {
         hourly = saved?.hourly ?? []
         verdict = saved?.verdict
         hourlyVerdicts = saved?.hourlyVerdicts ?? []
+        aiBriefingEnabled = saved?.aiBriefingEnabled ?? true
         if snapshot != nil { phase = .loaded }
+        updateBriefing(allowModel: false)
     }
 
     // MARK: Staleness
@@ -109,6 +136,9 @@ final class FlightStore {
         if DataFreshness.needsRefresh(dataAge) {
             await refresh()
         } else {
+            // Data is fresh, but the model may not have seen it yet (e.g. a
+            // background refresh wrote a template). Cached facts are free.
+            updateBriefing(allowModel: true)
             await loadAttributionIfNeeded()
         }
     }
@@ -118,24 +148,31 @@ final class FlightStore {
     /// background location is unreliable under when-in-use authorization,
     /// and the weather grid is far coarser than an hour of drift.
     func refreshInBackground() async {
-        await refresh(locationMaxCacheAge: 60 * 60)
+        await refresh(locationMaxCacheAge: 60 * 60, allowModel: false)
     }
 
     /// Concurrent callers join the in-flight fetch instead of starting a
     /// second one: launch fires both `.task` and the `.active` scene change,
     /// which used to race and flash a spurious "no location" failure.
-    func refresh(locationMaxCacheAge: TimeInterval = 5 * 60) async {
+    ///
+    /// `allowModel: false` (background wake-ups) writes the template
+    /// briefing only — the model is asked when the pilot is actually
+    /// looking, which keeps the daily Private Cloud Compute quota for them.
+    func refresh(locationMaxCacheAge: TimeInterval = 5 * 60, allowModel: Bool = true) async {
         if let refreshTask {
             await refreshTask.value
             return
         }
-        let task = Task { await performRefresh(locationMaxCacheAge: locationMaxCacheAge) }
+        let task = Task {
+            await performRefresh(locationMaxCacheAge: locationMaxCacheAge,
+                                 allowModel: allowModel)
+        }
         refreshTask = task
         await task.value
         refreshTask = nil
     }
 
-    private func performRefresh(locationMaxCacheAge: TimeInterval) async {
+    private func performRefresh(locationMaxCacheAge: TimeInterval, allowModel: Bool) async {
         phase = .loading
         do {
             let location = try await locationService.currentLocation(
@@ -157,7 +194,7 @@ final class FlightStore {
             let previousVerdict = verdict?.verdict
             snapshot = result.current
             hourly = result.hourly
-            rescore()
+            rescore(allowModel: allowModel)
             phase = .loaded
             lastRefreshError = nil
             playHaptic(from: previousVerdict, to: verdict?.verdict)
@@ -172,7 +209,9 @@ final class FlightStore {
 
     // MARK: Scoring
 
-    private func rescore() {
+    /// Re-runs the engine, then refreshes the briefing from its output.
+    private func rescore(allowModel: Bool = true) {
+        defer { updateBriefing(allowModel: allowModel) }
         guard let snapshot else {
             verdict = nil
             hourlyVerdicts = []
@@ -206,6 +245,77 @@ final class FlightStore {
         effectiveGustLimit < thresholds.maxGustMph
     }
 
+    // MARK: Briefing
+
+    /// Engine output → facts. nil when there's nothing current to brief.
+    private var currentFacts: BriefingFacts? {
+        guard let snapshot, let verdict, !isExpired else { return nil }
+        return BriefingFacts(verdict: verdict,
+                             snapshot: snapshot,
+                             profile: selectedProfile,
+                             thresholds: thresholds,
+                             bestWindow: bestWindow)
+    }
+
+    /// Template (or cached) briefing right now; then, if allowed, the model
+    /// pipeline in the background. A result is only applied if the facts
+    /// haven't moved on while it was generating.
+    private func updateBriefing(allowModel: Bool) {
+        guard let facts = currentFacts, let timestamp = snapshot?.timestamp else {
+            cancelBriefingTask()
+            briefing = nil
+            return
+        }
+        // Launch fires both `.task` and the `.active` scene change; don't
+        // cancel (and pay for) a request that's already answering this.
+        if briefingTask != nil, briefingTaskFacts == facts, aiBriefingEnabled { return }
+        cancelBriefingTask()
+
+        briefing = briefingService.immediateBriefing(
+            for: facts, snapshotTimestamp: timestamp, aiEnabled: aiBriefingEnabled)
+
+        guard allowModel, aiBriefingEnabled, briefing?.source != .ai else { return }
+        briefingTaskFacts = facts
+        briefingTask = Task {
+            let result = await briefingService.briefing(
+                for: facts, snapshotTimestamp: timestamp, aiEnabled: true)
+            guard !Task.isCancelled, currentFacts == facts else { return }
+            let textChanged = result.headline != briefing?.headline
+                || result.detail != briefing?.detail
+                || result.window != briefing?.window
+            briefing = result
+            briefingTask = nil
+            briefingTaskFacts = nil
+            if textChanged {
+                WidgetCenter.shared.reloadTimelines(ofKind: BriefingStore.widgetKind)
+            }
+        }
+    }
+
+    private func cancelBriefingTask() {
+        briefingTask?.cancel()
+        briefingTask = nil
+        briefingTaskFacts = nil
+    }
+
+    /// One-line status for Settings.
+    var briefingStatusText: String {
+        guard aiBriefingEnabled else { return "Off — using templates" }
+        guard let briefing else { return "Waiting for weather" }
+        switch briefing.source {
+        case .ai:
+            return "Apple Intelligence (Private Cloud Compute)"
+        case .template:
+            switch briefing.fallbackReason {
+            case .modelUnavailable(let reason)?: return "Template — \(reason.label)"
+            case .timedOut?:                     return "Template — AI timed out"
+            case .generationFailed?:             return "Template — AI error"
+            case .rejectedByGuard?:              return "Template — AI text failed checks"
+            case .disabledByUser?, nil:          return "Template"
+            }
+        }
+    }
+
     // MARK: Side effects
 
     private func persist(reloadWidgets: WidgetReload = .coalesced) {
@@ -215,7 +325,8 @@ final class FlightStore {
             verdict: verdict,
             hourlyVerdicts: hourlyVerdicts,
             profileID: selectedProfile.id,
-            thresholds: thresholds))
+            thresholds: thresholds,
+            aiBriefingEnabled: aiBriefingEnabled))
 
         // Profile/threshold switches change the verdict — push it to the
         // complication right away, not just after the next weather fetch.

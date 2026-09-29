@@ -2,8 +2,8 @@
 //  VerdictView.swift
 //  DroneCast — Views
 //
-//  The answer, first. Big verdict, score gauge, binding-factor sentence,
-//  data age, and the permanent airspace reminder.
+//  The answer, first. Big verdict, score gauge, plain-English briefing,
+//  binding-factor sentence, data age, and the permanent airspace reminder.
 //
 
 import SwiftUI
@@ -80,6 +80,11 @@ struct VerdictView: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("\(verdict.verdict.spokenLabel) for \(store.selectedProfile.name)")
             .accessibilityValue("Score \(verdict.score) of 100")
+
+            if let briefing = store.briefing {
+                BriefingCardView(briefing: briefing)
+                    .padding(.top, 2)
+            }
 
             aircraftChip
 
