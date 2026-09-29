@@ -1,0 +1,624 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0633B0246640E35627481764 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F261A174B4CD3E74AD733A /* Models.swift */; };
+		2803A6CD847F4A64AE6CEF00 /* FlightScorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1F58DCD8598041EF380EB2 /* FlightScorer.swift */; };
+		3FC107C8D6CE4F3765B263AE /* FlightStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A1BF587E3D64195BBDE3AB /* FlightStore.swift */; };
+		41EA427C3C2F34DB1B3A45E4 /* FlightScorerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0A9ABA811C40EE85C451AE /* FlightScorerTests.swift */; };
+		43284E2CD87261E0C5F38E84 /* SharedDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4EB9C0817A68ECAD6E5AED /* SharedDefaults.swift */; };
+		5536C49F2487152AAF4EC76E /* DroneCastApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B7EF5F3D2C91B04638141E /* DroneCastApp.swift */; };
+		56FA361E21A5F6DA7FB0A78C /* WeatherKitProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1979E833691D6ABC5DDED9B /* WeatherKitProvider.swift */; };
+		6450C2AC6E24EBBF928216E5 /* FlightScorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1F58DCD8598041EF380EB2 /* FlightScorer.swift */; };
+		6C7FCF7252600016943E9A79 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F261A174B4CD3E74AD733A /* Models.swift */; };
+		705D73BB217D95EF046EE8DD /* SharedDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4EB9C0817A68ECAD6E5AED /* SharedDefaults.swift */; };
+		869AA4F696B6F8B312F0440E /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3886C5FE3315086B84197F66 /* LocationService.swift */; };
+		8AA341C0B57EC2CE80A3D95C /* WindowStripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC879E3BF52046173B05E84 /* WindowStripView.swift */; };
+		98E081580D43304719334D88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0097A8AE33E2B71FD5A2D69 /* Assets.xcassets */; };
+		A1CB78795E2C5FDA9C76D4CD /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F261A174B4CD3E74AD733A /* Models.swift */; };
+		A35FDE45A7411961BD37151F /* DroneCastWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 814687E981725E0FBDDBAC3B /* DroneCastWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A418B895C32AAAA144E5CC6F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA297C655351CE043FD97D80 /* SettingsView.swift */; };
+		AF2848DB9E76358689D7BA3D /* FactorListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5D848C4AD915338885620E /* FactorListView.swift */; };
+		B26F89D3B7E100E75147D7F4 /* WeatherProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946E57D732C5BF1784928748 /* WeatherProviding.swift */; };
+		C0FE774EDC2A44C96B278461 /* DroneCastWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E25225638BF67474D894FA4 /* DroneCastWidgets.swift */; };
+		CF0876A3C0B43E7DC4D05778 /* FlightScorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1F58DCD8598041EF380EB2 /* FlightScorer.swift */; };
+		D9ADD72B452E195F0D566A63 /* VerdictView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A142C3C0091A3E62D48DDA /* VerdictView.swift */; };
+		F9887B14718832B6785C2696 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A4E7B6505B0AFF76FEE58E /* RootTabView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6BE826C73C6D8144B2E5CFE4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 923DE769FBA95E3BE26DAE5A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B2FBF89F2110626DA5948D03;
+			remoteInfo = DroneCastWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1B734CD17712CC50D815C4E7 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A35FDE45A7411961BD37151F /* DroneCastWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0B199556DF1C2EF16705A70C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0B4EB9C0817A68ECAD6E5AED /* SharedDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDefaults.swift; sourceTree = "<group>"; };
+		0E25225638BF67474D894FA4 /* DroneCastWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroneCastWidgets.swift; sourceTree = "<group>"; };
+		1AC879E3BF52046173B05E84 /* WindowStripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowStripView.swift; sourceTree = "<group>"; };
+		1CE3EAE4201FA3A5E18082B4 /* DroneCastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DroneCastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E0A9ABA811C40EE85C451AE /* FlightScorerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightScorerTests.swift; sourceTree = "<group>"; };
+		2C253EF6C5CBF79DC0AC209F /* DroneCastWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DroneCastWidgets.entitlements; sourceTree = "<group>"; };
+		3886C5FE3315086B84197F66 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		4297BA2A9C1A55A7CC8A4C3F /* DroneCastWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DroneCastWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		59A4E7B6505B0AFF76FEE58E /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		68D2B5BEC29D1C98C6BC3313 /* DroneCastWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DroneCastWatch.entitlements; sourceTree = "<group>"; };
+		78A1BF587E3D64195BBDE3AB /* FlightStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightStore.swift; sourceTree = "<group>"; };
+		814687E981725E0FBDDBAC3B /* DroneCastWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DroneCastWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		946E57D732C5BF1784928748 /* WeatherProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherProviding.swift; sourceTree = "<group>"; };
+		A1979E833691D6ABC5DDED9B /* WeatherKitProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherKitProvider.swift; sourceTree = "<group>"; };
+		AA1F58DCD8598041EF380EB2 /* FlightScorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightScorer.swift; sourceTree = "<group>"; };
+		B0097A8AE33E2B71FD5A2D69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BA297C655351CE043FD97D80 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D137B3E390DB017FF21D3168 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D6F261A174B4CD3E74AD733A /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		DE5D848C4AD915338885620E /* FactorListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactorListView.swift; sourceTree = "<group>"; };
+		F2A142C3C0091A3E62D48DDA /* VerdictView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerdictView.swift; sourceTree = "<group>"; };
+		F5B7EF5F3D2C91B04638141E /* DroneCastApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroneCastApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		3DAA7152AD721579F4A7F531 /* DroneCastWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				2C253EF6C5CBF79DC0AC209F /* DroneCastWidgets.entitlements */,
+				0E25225638BF67474D894FA4 /* DroneCastWidgets.swift */,
+				D137B3E390DB017FF21D3168 /* Info.plist */,
+			);
+			path = DroneCastWidgets;
+			sourceTree = "<group>";
+		};
+		4AA9C479BDB9F940FAF49861 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DE5D848C4AD915338885620E /* FactorListView.swift */,
+				59A4E7B6505B0AFF76FEE58E /* RootTabView.swift */,
+				BA297C655351CE043FD97D80 /* SettingsView.swift */,
+				F2A142C3C0091A3E62D48DDA /* VerdictView.swift */,
+				1AC879E3BF52046173B05E84 /* WindowStripView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5B1652498346096332083E5E /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F5B7EF5F3D2C91B04638141E /* DroneCastApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		6CA01155DD613BCDA5EAB1CA /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				AA1F58DCD8598041EF380EB2 /* FlightScorer.swift */,
+				D6F261A174B4CD3E74AD733A /* Models.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		705F57F74CEF145A1F087F54 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				3886C5FE3315086B84197F66 /* LocationService.swift */,
+				A1979E833691D6ABC5DDED9B /* WeatherKitProvider.swift */,
+				946E57D732C5BF1784928748 /* WeatherProviding.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		70EF8E5DD274D9ECE0C1EA68 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				78A1BF587E3D64195BBDE3AB /* FlightStore.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		92241C95744F150D8813A597 = {
+			isa = PBXGroup;
+			children = (
+				CD88EB1E6DB6396FE6248C41 /* DroneCastWatch */,
+				3DAA7152AD721579F4A7F531 /* DroneCastWidgets */,
+				F43F123F28FD9997F0D9F8D1 /* Tests */,
+				EA4A190F5F9A2F503619F7D8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C6ECD8EEA39BA01B4A188DDB /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				0B4EB9C0817A68ECAD6E5AED /* SharedDefaults.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		CD88EB1E6DB6396FE6248C41 /* DroneCastWatch */ = {
+			isa = PBXGroup;
+			children = (
+				68D2B5BEC29D1C98C6BC3313 /* DroneCastWatch.entitlements */,
+				0B199556DF1C2EF16705A70C /* Info.plist */,
+				5B1652498346096332083E5E /* App */,
+				6CA01155DD613BCDA5EAB1CA /* Domain */,
+				70EF8E5DD274D9ECE0C1EA68 /* Model */,
+				C6ECD8EEA39BA01B4A188DDB /* Persistence */,
+				F8DFDB3709F11FF4E5DC9CF1 /* Resources */,
+				705F57F74CEF145A1F087F54 /* Services */,
+				4AA9C479BDB9F940FAF49861 /* Views */,
+			);
+			path = DroneCastWatch;
+			sourceTree = "<group>";
+		};
+		EA4A190F5F9A2F503619F7D8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1CE3EAE4201FA3A5E18082B4 /* DroneCastTests.xctest */,
+				4297BA2A9C1A55A7CC8A4C3F /* DroneCastWatch.app */,
+				814687E981725E0FBDDBAC3B /* DroneCastWidgets.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F43F123F28FD9997F0D9F8D1 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				1E0A9ABA811C40EE85C451AE /* FlightScorerTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		F8DFDB3709F11FF4E5DC9CF1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B0097A8AE33E2B71FD5A2D69 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2EC6844039AA7A381614BA19 /* DroneCastTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15F849CC0D05A9772077B053 /* Build configuration list for PBXNativeTarget "DroneCastTests" */;
+			buildPhases = (
+				26539B46B77814CD5F97DE2A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DroneCastTests;
+			packageProductDependencies = (
+			);
+			productName = DroneCastTests;
+			productReference = 1CE3EAE4201FA3A5E18082B4 /* DroneCastTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B0E609CA3B7889DC0CF2A82C /* DroneCastWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0336942C025C599B30C1D87 /* Build configuration list for PBXNativeTarget "DroneCastWatch" */;
+			buildPhases = (
+				875A0C364FDDE6D58E18356C /* Sources */,
+				2DF9861915423ED711BE0397 /* Resources */,
+				1B734CD17712CC50D815C4E7 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5BB788A645B74E025C313167 /* PBXTargetDependency */,
+			);
+			name = DroneCastWatch;
+			packageProductDependencies = (
+			);
+			productName = DroneCastWatch;
+			productReference = 4297BA2A9C1A55A7CC8A4C3F /* DroneCastWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B2FBF89F2110626DA5948D03 /* DroneCastWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 032D1261B727C215082B1654 /* Build configuration list for PBXNativeTarget "DroneCastWidgets" */;
+			buildPhases = (
+				D57B3DFC563BA8F7DEBE8616 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DroneCastWidgets;
+			packageProductDependencies = (
+			);
+			productName = DroneCastWidgets;
+			productReference = 814687E981725E0FBDDBAC3B /* DroneCastWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		923DE769FBA95E3BE26DAE5A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2700;
+			};
+			buildConfigurationList = 2AE48DD450C27E969210A53D /* Build configuration list for PBXProject "DroneCast" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 92241C95744F150D8813A597;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EA4A190F5F9A2F503619F7D8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2EC6844039AA7A381614BA19 /* DroneCastTests */,
+				B0E609CA3B7889DC0CF2A82C /* DroneCastWatch */,
+				B2FBF89F2110626DA5948D03 /* DroneCastWidgets */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2DF9861915423ED711BE0397 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98E081580D43304719334D88 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		26539B46B77814CD5F97DE2A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6450C2AC6E24EBBF928216E5 /* FlightScorer.swift in Sources */,
+				41EA427C3C2F34DB1B3A45E4 /* FlightScorerTests.swift in Sources */,
+				0633B0246640E35627481764 /* Models.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		875A0C364FDDE6D58E18356C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5536C49F2487152AAF4EC76E /* DroneCastApp.swift in Sources */,
+				AF2848DB9E76358689D7BA3D /* FactorListView.swift in Sources */,
+				2803A6CD847F4A64AE6CEF00 /* FlightScorer.swift in Sources */,
+				3FC107C8D6CE4F3765B263AE /* FlightStore.swift in Sources */,
+				869AA4F696B6F8B312F0440E /* LocationService.swift in Sources */,
+				6C7FCF7252600016943E9A79 /* Models.swift in Sources */,
+				F9887B14718832B6785C2696 /* RootTabView.swift in Sources */,
+				A418B895C32AAAA144E5CC6F /* SettingsView.swift in Sources */,
+				705D73BB217D95EF046EE8DD /* SharedDefaults.swift in Sources */,
+				D9ADD72B452E195F0D566A63 /* VerdictView.swift in Sources */,
+				56FA361E21A5F6DA7FB0A78C /* WeatherKitProvider.swift in Sources */,
+				B26F89D3B7E100E75147D7F4 /* WeatherProviding.swift in Sources */,
+				8AA341C0B57EC2CE80A3D95C /* WindowStripView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D57B3DFC563BA8F7DEBE8616 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0FE774EDC2A44C96B278461 /* DroneCastWidgets.swift in Sources */,
+				CF0876A3C0B43E7DC4D05778 /* FlightScorer.swift in Sources */,
+				A1CB78795E2C5FDA9C76D4CD /* Models.swift in Sources */,
+				43284E2CD87261E0C5F38E84 /* SharedDefaults.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5BB788A645B74E025C313167 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B2FBF89F2110626DA5948D03 /* DroneCastWidgets */;
+			targetProxy = 6BE826C73C6D8144B2E5CFE4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		03772C4EF04991FD35DD2211 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sguzyayev.dronecast.tests;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
+		04199FA170605D12DFEA0A72 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sguzyayev.dronecast.tests;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+		1A9801C17B17A9A0226917F9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DroneCastWidgets/DroneCastWidgets.entitlements;
+				DEVELOPMENT_TEAM = 7RLDYXQTNX;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DroneCastWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sguzyayev.dronecast.widgets;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
+		1D7ACBEF440408448CAE1B13 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DroneCastWatch/DroneCastWatch.entitlements;
+				DEVELOPMENT_TEAM = 7RLDYXQTNX;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DroneCastWatch/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sguzyayev.dronecast;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+		660F6E9C7867DDEE2937347D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		AD197D6A7762C47EBE1D4850 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DroneCastWidgets/DroneCastWidgets.entitlements;
+				DEVELOPMENT_TEAM = 7RLDYXQTNX;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DroneCastWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sguzyayev.dronecast.widgets;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+		B5231C91A910CF95CE4E7974 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DroneCastWatch/DroneCastWatch.entitlements;
+				DEVELOPMENT_TEAM = 7RLDYXQTNX;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DroneCastWatch/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sguzyayev.dronecast;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
+		FDDF33B766455B85D38A3FCD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		032D1261B727C215082B1654 /* Build configuration list for PBXNativeTarget "DroneCastWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AD197D6A7762C47EBE1D4850 /* Debug */,
+				1A9801C17B17A9A0226917F9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		15F849CC0D05A9772077B053 /* Build configuration list for PBXNativeTarget "DroneCastTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04199FA170605D12DFEA0A72 /* Debug */,
+				03772C4EF04991FD35DD2211 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2AE48DD450C27E969210A53D /* Build configuration list for PBXProject "DroneCast" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				660F6E9C7867DDEE2937347D /* Debug */,
+				FDDF33B766455B85D38A3FCD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B0336942C025C599B30C1D87 /* Build configuration list for PBXNativeTarget "DroneCastWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D7ACBEF440408448CAE1B13 /* Debug */,
+				B5231C91A910CF95CE4E7974 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 923DE769FBA95E3BE26DAE5A /* Project object */;
+}

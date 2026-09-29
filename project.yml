@@ -1,0 +1,79 @@
+# DroneCast — XcodeGen project spec
+#
+# Convenience path:  brew install xcodegen && xcodegen generate
+# (The README also documents a manual Xcode setup that needs no tooling.)
+#
+# Before first build:
+#   1. Set DEVELOPMENT_TEAM below (or pick your team in Xcode → Signing —
+#      a free "(Personal Team)" works).
+#   2. Rename the App Group in BOTH .entitlements files AND in
+#      DroneCastWatch/Persistence/SharedDefaults.swift to a group you own.
+#
+# Weather data comes from Open-Meteo by default — no WeatherKit entitlement,
+# so free personal teams can sign. See README "Upgrading to WeatherKit".
+
+name: DroneCast
+
+options:
+  bundleIdPrefix: com.sguzyayev
+  deploymentTarget:
+    watchOS: "11.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # DEVELOPMENT_TEAM: "YOURTEAMID"
+
+targets:
+
+  DroneCastWatch:
+    type: application
+    platform: watchOS
+    sources:
+      - path: DroneCastWatch
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast
+        INFOPLIST_FILE: DroneCastWatch/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: DroneCastWatch/DroneCastWatch.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        TARGETED_DEVICE_FAMILY: "4"
+    dependencies:
+      - target: DroneCastWidgets
+    scheme:
+      testTargets:
+        - DroneCastTests
+
+  DroneCastWidgets:
+    type: app-extension
+    platform: watchOS
+    sources:
+      - path: DroneCastWidgets
+      # Domain + Persistence are shared with the app target by direct
+      # source membership (no framework needed at this size).
+      - path: DroneCastWatch/Domain
+      - path: DroneCastWatch/Persistence
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast.widgets
+        INFOPLIST_FILE: DroneCastWidgets/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: DroneCastWidgets/DroneCastWidgets.entitlements
+        TARGETED_DEVICE_FAMILY: "4"
+
+  DroneCastTests:
+    type: bundle.unit-test
+    platform: watchOS
+    sources:
+      - path: Tests
+      # The scorer is pure Foundation — compile Domain straight into the
+      # test bundle so tests run standalone, with no host app required.
+      - path: DroneCastWatch/Domain
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast.tests
