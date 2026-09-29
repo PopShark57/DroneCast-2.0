@@ -243,7 +243,7 @@ struct FlightScorerTests {
 
         let window = WindowFinder.bestGoWindow(hours)
         #expect(window?.start == base.addingTimeInterval(4 * 3600))
-        #expect(window?.duration == 3 * 3600)
+        #expect(window?.duration == TimeInterval(3 * 3600))
     }
 
     @Test func bestWindowPrefersEarliestOnTies() {
@@ -255,7 +255,7 @@ struct FlightScorerTests {
 
         let window = WindowFinder.bestGoWindow(hours)
         #expect(window?.start == base)
-        #expect(window?.duration == 2 * 3600)
+        #expect(window?.duration == TimeInterval(2 * 3600))
     }
 
     @Test func bestWindowNilForEmptyForecast() {
