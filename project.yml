@@ -1,0 +1,88 @@
+# DroneCast — XcodeGen project spec
+#
+# Convenience path:  brew install xcodegen && xcodegen generate
+# (The README also documents a manual Xcode setup that needs no tooling.)
+#
+# Before first build:
+#   1. Set DEVELOPMENT_TEAM below (or pick your team in Xcode → Signing —
+#      a free "(Personal Team)" works).
+#   2. Rename the App Group in BOTH .entitlements files AND in
+#      DroneCastWatch/Persistence/SharedDefaults.swift to a group you own.
+#
+# Weather data comes from Open-Meteo by default — no WeatherKit entitlement,
+# so free personal teams can sign. See README "Upgrading to WeatherKit".
+#
+# AI Briefing (2.0) likewise ships without the Private Cloud Compute
+# entitlement; every briefing is the deterministic template until
+# BriefingConfig.useCloudModel is flipped. See README "AI Briefing".
+
+name: DroneCast
+
+options:
+  bundleIdPrefix: com.sguzyayev
+  deploymentTarget:
+    watchOS: "27.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "2.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # DEVELOPMENT_TEAM: "YOURTEAMID"
+
+targets:
+
+  DroneCastWatch:
+    type: application
+    platform: watchOS
+    sources:
+      - path: DroneCastWatch
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast
+        INFOPLIST_FILE: DroneCastWatch/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: DroneCastWatch/DroneCastWatch.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        TARGETED_DEVICE_FAMILY: "4"
+    dependencies:
+      - target: DroneCastWidgets
+    scheme:
+      testTargets:
+        - DroneCastTests
+
+  DroneCastWidgets:
+    type: app-extension
+    platform: watchOS
+    sources:
+      - path: DroneCastWidgets
+      # Domain + Persistence + Briefing are shared with the app target by
+      # direct source membership (no framework needed at this size). The
+      # widget reads cached briefings only; it never calls a model.
+      - path: DroneCastWatch/Domain
+      - path: DroneCastWatch/Persistence
+      - path: DroneCastWatch/Briefing
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast.widgets
+        INFOPLIST_FILE: DroneCastWidgets/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: DroneCastWidgets/DroneCastWidgets.entitlements
+        TARGETED_DEVICE_FAMILY: "4"
+
+  DroneCastTests:
+    type: bundle.unit-test
+    platform: watchOS
+    sources:
+      - path: Tests
+      # The scorer and the briefing layer are pure Foundation — compile them
+      # straight into the test bundle so tests run standalone, with no host
+      # app and no language model required.
+      - path: DroneCastWatch/Domain
+      - path: DroneCastWatch/Persistence
+      - path: DroneCastWatch/Briefing
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast.tests
