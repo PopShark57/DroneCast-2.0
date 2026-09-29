@@ -1,6 +1,6 @@
 # DroneCast 2.0 — watchOS
 
-Go / no-go drone flight conditions on your wrist, scored against your personal thresholds (gusts < 20 mph, rain < 30 %, humidity < 75 %) and per-aircraft wind limits for the DJI Air 3S, Neo, Neo 2, and an FPV Practice profile.
+Go / no-go drone flight conditions on your wrist, scored against your personal thresholds (gusts < 20 mph, rain < 30 %, humidity < 75 %) and per-aircraft wind limits for the DJI Air 3S, Neo, Neo 2, and an FPV Practice profile. Gusts over the limit are an immediate NO-GO; humidity or rain chance above your threshold caps the verdict at CAUTION, so a day over any of your own limits is never GO.
 
 **New in 2.0 — AI Briefing:** a plain-English briefing of the verdict under the score, a "Flight Briefing" complication, and a "Can I fly?" Siri shortcut. The deterministic scoring engine still decides everything; the language model only rewords its facts, and a hallucination guard throws away any text that changes a number or the verdict. See [AI Briefing](#ai-briefing-20).
 
@@ -74,7 +74,7 @@ open DroneCast.xcodeproj
 
 ## Tests
 
-`Cmd-U` on the DroneCastWatch scheme (or the DroneCastTests scheme in the manual setup). The suite covers the entire go/no-go policy: hard gates, per-aircraft gust clamping (19 mph gusts → Neo NO-GO, Neo 2/Air 3S CAUTION), threshold math, FPV goggle-fog and cold-battery flags, the freshness policy, the forecast horizon (`ForecastWindow`), and the best-window finder.
+`Cmd-U` on the DroneCastWatch scheme (or the DroneCastTests scheme in the manual setup). The suite covers the entire go/no-go policy: hard gates, humidity / rain-chance thresholds capping the verdict at CAUTION, per-aircraft gust clamping (19 mph gusts → Neo NO-GO, Neo 2/Air 3S CAUTION), threshold math, FPV goggle-fog and cold-battery flags, the freshness policy, the forecast horizon (`ForecastWindow`), and the best-window finder.
 
 2.0 adds briefing tests that need no device or network — the model sits behind the `BriefingGenerating` protocol and tests use a mock:
 

@@ -109,6 +109,51 @@ struct FlightScorerTests {
         #expect((88...92).contains(verdict.score)) // …but humidity paid its 10 pts
     }
 
+    // MARK: Personal thresholds cap the verdict
+
+    @Test func humidityAboveThresholdIsNeverGo() {
+        // Regression: 80 % humidity on an otherwise calm day scored 90 and
+        // showed GO with "All factors within your limits".
+        let verdict = scorer.evaluate(calm { $0.humidityPercent = 80 }, profile: .neo2)
+        #expect(verdict.verdict == .caution)
+        #expect(verdict.flags.contains(.humidityOverLimit))
+        #expect(verdict.bindingFactor == "Humidity 80% over your 75% limit")
+    }
+
+    @Test func rainChanceAboveThresholdIsNeverGo() {
+        let verdict = scorer.evaluate(calm { $0.precipChancePercent = 35 }, profile: .air3s)
+        #expect(verdict.verdict == .caution)
+        #expect(verdict.flags.contains(.rainChanceOverLimit))
+        #expect(verdict.bindingFactor == "Rain chance 35% over your 30% limit")
+    }
+
+    @Test func overLimitCapsEveryAircraft() {
+        for profile in DroneProfile.fleet {
+            let verdict = scorer.evaluate(calm { $0.humidityPercent = 76 }, profile: profile)
+            #expect(verdict.verdict != .go, "\(profile.id)")
+        }
+    }
+
+    @Test func exactlyAtThresholdStaysGoButSaysSo() {
+        let verdict = scorer.evaluate(calm { $0.humidityPercent = 75 }, profile: .neo2)
+        #expect(verdict.verdict == .go)
+        #expect(!verdict.flags.contains(.humidityOverLimit))
+        #expect(verdict.bindingFactor == "Humidity 75% at your 75% limit")
+    }
+
+    @Test func thresholdsFollowThePilotsSettings() {
+        let relaxed = FlightScorer(thresholds: UserThresholds(
+            maxHumidityPercent: 85, maxPrecipChancePercent: 40, maxGustMph: 20))
+        let verdict = relaxed.evaluate(
+            calm { $0.humidityPercent = 78; $0.precipChancePercent = 32 }, profile: .neo2)
+        #expect(verdict.flags.isEmpty)
+        #expect(verdict.verdict == .go)
+    }
+
+    @Test func calmDaySaysAllFactorsWithinLimits() {
+        #expect(scorer.evaluate(calm(), profile: .neo2).bindingFactor == "All factors within your limits")
+    }
+
     // MARK: Caution flags
 
     @Test func fpvGoggleFogFlag() {
