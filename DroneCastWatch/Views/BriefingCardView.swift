@@ -77,7 +77,7 @@ extension Briefing.Source {
 
     var spokenLabel: String {
         switch self {
-        case .ai:       return "written by Apple Intelligence"
+        case .ai:       return "written by AI"
         case .template: return "from template"
         }
     }

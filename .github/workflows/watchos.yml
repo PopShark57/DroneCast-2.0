@@ -1,7 +1,7 @@
 name: watchOS build & test
 
-# Builds the app, widget extension and tests for the watchOS 27 simulator
-# and runs the Swift Testing suite. Simulator-only: no signing, no
+# Builds the watch app, widget extension and tests for the watchOS 27
+# simulator, builds the iPhone companion, and runs the Swift Testing suite. Simulator-only: no signing, no
 # WeatherKit, no Private Cloud Compute — the model layer is mocked in tests.
 
 on:
@@ -39,6 +39,15 @@ jobs:
             -project DroneCast.xcodeproj \
             -scheme DroneCastWatch \
             -destination "$DESTINATION" \
+            -quiet \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Build iPhone companion (embeds the watch app)
+        run: |
+          xcodebuild build \
+            -project DroneCast.xcodeproj \
+            -scheme DroneCastPhone \
+            -destination "generic/platform=iOS Simulator" \
             -quiet \
             CODE_SIGNING_ALLOWED=NO
 

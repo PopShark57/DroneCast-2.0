@@ -14,6 +14,26 @@ struct BriefingDraft: Equatable, Sendable {
     var headline: String
     var detail: String
     var window: String
+    /// Which model wrote it; nil for mocks and the template.
+    var provider: BriefingModelSource? = nil
+}
+
+/// The language model behind an AI briefing.
+enum BriefingModelSource: String, Codable, Equatable, Sendable {
+    /// Claude over the Anthropic API, called from the watch.
+    case claude
+    /// The paired iPhone's on-device Apple Intelligence model.
+    case iPhone
+    /// Apple's Private Cloud Compute (paid-program entitlement).
+    case privateCloudCompute
+
+    var label: String {
+        switch self {
+        case .claude:              return "Claude (Anthropic API)"
+        case .iPhone:              return "iPhone (Apple Intelligence)"
+        case .privateCloudCompute: return "Apple Intelligence (Private Cloud Compute)"
+        }
+    }
 }
 
 struct Briefing: Codable, Equatable, Sendable {
@@ -39,6 +59,9 @@ struct Briefing: Codable, Equatable, Sendable {
     /// Timestamp of the weather snapshot the facts came from, for the same
     /// STALE / expired policy the verdict complication uses.
     var snapshotTimestamp: Date
+    /// Which model wrote an AI briefing; nil for the template (and for
+    /// briefings cached before 2.1).
+    var provider: BriefingModelSource? = nil
 
     /// Spoken / plain-text form for Siri.
     var spokenText: String {
@@ -78,6 +101,12 @@ enum BriefingModelAvailability: Equatable, Sendable {
         case systemNotReady
         /// The per-user Private Cloud Compute quota is spent until it resets.
         case quotaReached
+        /// Claude: no API key in Config/Secrets.xcconfig.
+        case missingAPIKey
+        /// iPhone: the DroneCast iPhone app isn't installed.
+        case phoneAppMissing
+        /// iPhone: not connected to the watch right now.
+        case phoneUnreachable
         /// A case added by a future SDK.
         case unknown
 
@@ -87,6 +116,9 @@ enum BriefingModelAvailability: Equatable, Sendable {
             case .deviceNotEligible: return "This watch isn't eligible"
             case .systemNotReady:    return "Apple Intelligence isn't ready yet"
             case .quotaReached:      return "Daily AI limit reached"
+            case .missingAPIKey:     return "No Claude API key set"
+            case .phoneAppMissing:   return "iPhone app not installed"
+            case .phoneUnreachable:  return "iPhone not reachable"
             case .unknown:           return "AI unavailable"
             }
         }

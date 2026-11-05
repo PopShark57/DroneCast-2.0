@@ -6,7 +6,7 @@ Go / no-go drone flight conditions on your wrist, scored against your personal t
 
 Full product rationale lives in `DroneCast-Product-Spec.md` (delivered separately).
 
-> **Build status:** 2.0 is built and tested on the watchOS 27 simulator by GitHub Actions (`.github/workflows/watchos.yml`). The Private Cloud Compute model path has not been exercised on a real device — see [What hasn't been verified](#what-hasnt-been-verified).
+> **Build status:** the watch app is built and tested on the watchOS 27 simulator, and the iPhone companion is built for the iOS 27 simulator, by GitHub Actions (`.github/workflows/watchos.yml`). The Claude and iPhone briefing paths have not been exercised on real hardware — see [What hasn't been verified](#what-hasnt-been-verified).
 
 ## Project layout
 
@@ -20,16 +20,19 @@ DroneCast/
 │   ├── Domain/                  Models + FlightScorer   ← shared w/ widget & tests
 │   ├── Briefing/                Facts, template, guard, service, cache ← shared w/ widget & tests
 │   ├── Persistence/             SharedDefaults (App Group) ← shared w/ widget
-│   ├── Services/                WeatherKit, Open-Meteo, location, PCC briefing generator
+│   ├── Services/                WeatherKit, Open-Meteo, location; Claude / iPhone / PCC briefing generators
 │   ├── Intents/                 "Can I fly?" App Intent + Siri phrases
 │   ├── Resources/               Assets.xcassets (icon slot is empty)
 │   ├── Info.plist
 │   └── DroneCastWatch.entitlements
 ├── DroneCastWidgets/            ← widget extension (verdict + briefing complications)
+├── DroneCastPhone/              ← iPhone companion: runs the on-device model for the watch
+├── Shared/                      ← briefing prompt + schema used by watch and iPhone
+├── Config/                      ← build settings; Secrets.xcconfig (git-ignored) holds the Claude key
 └── Tests/                       ← scorer + briefing unit tests (Swift Testing)
 ```
 
-Requires **Xcode 27+** (Swift 6, Swift Testing), deployment target **watchOS 27** (Foundation Models is watchOS 27+).
+Requires **Xcode 27+** (Swift 6, Swift Testing), deployment targets **watchOS 27** and **iOS 27** (for the companion).
 
 ## Option A — generate the project with XcodeGen
 
@@ -41,6 +44,8 @@ open DroneCast.xcodeproj
 ```
 
 ## Option B — manual Xcode setup (no tooling)
+
+> Option B predates the iPhone companion and the Claude key config. For AI briefings beyond the template, use Option A — `project.yml` sets up the `DroneCastPhone` target, the watch-app embedding, and `Config/DroneCastWatch.xcconfig`.
 
 1. Xcode → **File → New → Project → watchOS → App**. Product name `DroneCastWatch`, interface SwiftUI, language Swift. Check "Include Tests" if you want Xcode-managed test targets, or add a unit-test target later.
 2. Delete the template `ContentView.swift` and the template App file.
@@ -54,8 +59,8 @@ open DroneCast.xcodeproj
 
 **Free personal team (default configuration):** the project ships with Open-Meteo as the weather provider and no WeatherKit entitlement, because personal teams cannot sign for WeatherKit — it requires paid Apple Developer Program membership.
 
-1. Select each target → **Signing & Capabilities** → set your **Team** (your "(Personal Team)" entry is fine).
-2. App target AND widget target → **+ Capability → App Groups** → create/select a group you own, e.g. `group.com.sguzyayev.dronecast`.
+1. Select each target (DroneCastWatch, DroneCastWidgets, DroneCastPhone) → **Signing & Capabilities** → set your **Team** (your "(Personal Team)" entry is fine). `project.yml` already sets team `7RLDYXQTNX`, so `xcodegen generate` keeps it.
+2. Watch app target AND widget target → **+ Capability → App Groups** → create/select a group you own, e.g. `group.com.sguzyayev.dronecast`.
    - If you use a different group ID, update it in **three places**: both `.entitlements` files and `AppGroup.identifier` in `Persistence/SharedDefaults.swift`.
 3. Personal-team limits to expect: provisioning expires after **7 days** (rebuild/reinstall to your watch weekly), max 10 App IDs and 3 devices at a time, and no App Store/TestFlight distribution.
 
@@ -92,28 +97,76 @@ open DroneCast.xcodeproj
 ### How it works
 
 1. **`BriefingFacts`** is built from the scoring engine's output: aircraft, verdict, score, binding factor and any other gates/flags, wind/gust vs. the per-aircraft clamp, precipitation, temperature, visibility, the best GO window, and the data source. Every number is pre-formatted exactly as the factor screen shows it.
-2. **`BriefingService`** checks the model's availability before every use, sends the facts as JSON (never prose) to a `LanguageModelSession` with guided generation (`@Generable` headline ≤ 40 chars, 1–2 sentence detail, window), with a 12 s timeout.
-3. **`HallucinationGuard`** rejects the output if any number isn't in the facts, a number behind the binding factor is missing, a number is spelled out, the headline doesn't state the engine's verdict, or any wording implies a different verdict.
-4. **`BriefingTemplate`** produces a deterministic briefing whenever the model is off, unavailable, erroring, slow, or rejected. The card looks identical either way; a small **AI** / **Template** tag shows the source.
-5. Briefings are **cached per aircraft + facts** in the App Group and only regenerated when the facts change. The complication and Siri intent read the cache only and never call a model. Background refreshes write the template; the model is only asked in the foreground.
+2. **`BriefingService`** checks model availability before every use, sends the facts as JSON (never prose) with one shared prompt (`Shared/BriefingPrompt.swift`), and gives up after 20 s.
+3. **`ChainedBriefingGenerator`** tries the models in order and keeps the first answer that passes the guard:
+   1. **Claude** (`ClaudeBriefingGenerator`) — the watch calls the Anthropic Messages API directly over Wi-Fi/cellular, with structured JSON output. Used when an API key is set.
+   2. **Your iPhone** (`PhoneBriefingGenerator` → `DroneCastPhone`) — the facts go to the iPhone app over WatchConnectivity, the iPhone runs Apple's on-device model (`SystemLanguageModel`) and sends back the explanation sentence; the watch uses the engine's own headline and window around it. Used when the iPhone is in range. (Apple's ~3B on-device model kept overrunning the 40-character headline and inventing windows when asked for all three fields; with shorter, example-led instructions and the detail sentence only, all 8 GO / CAUTION / NO-GO test scenarios passed the guard when run against the on-device model on a Mac.)
+   3. **Private Cloud Compute** (`PCCBriefingGenerator`) — only if you ever enable it (paid program, see below).
+4. **`HallucinationGuard`** rejects any output where a number isn't in the facts, a number behind the binding factor is missing, a number is spelled out, the headline doesn't state the engine's verdict, or any wording implies a different verdict. A rejected answer gives the next model a turn.
+5. **`BriefingTemplate`** produces a deterministic briefing whenever every model is off, unavailable, erroring, slow, or rejected. The card looks identical either way; a small **AI** / **Template** tag shows the source, and Settings → Briefing names the model that wrote it.
+6. Briefings are **cached per aircraft + facts** in the App Group and only regenerated when the facts change. The complication and Siri intent read the cache only and never call a model. Background refreshes write the template; models are only asked in the foreground.
 
-### Platform reality on watchOS 27 (read before enabling)
+### Why not just Apple Intelligence on the watch?
 
-- **There is no on-device language model on Apple Watch.** `SystemLanguageModel` is not available on watchOS. Foundation Models on watchOS 27 always goes to **Private Cloud Compute** (`PrivateCloudComputeLanguageModel`) over Wi-Fi or cellular — not via the iPhone. Weather facts (never location) leave the device; Apple states PCC stores no prompts.
-- Its availability reports `available`, `deviceNotEligible`, or `systemNotReady`, plus a separate per-user daily **quota**. All are handled and fall back to the template.
-- **Personal teams can't use it.** PCC needs a managed entitlement that Apple grants only to App Store Small Business Program members (< 2M first-time downloads) — i.e. the paid Developer Program. So, exactly like WeatherKit, it ships **off**: `BriefingConfig.useCloudModel = false` in `Services/PCCBriefingGenerator.swift`, and no entitlement is added. With it off, every briefing is the template and the settings row says "Template — Not enabled in this build".
+- **There is no on-device language model on Apple Watch.** In the watchOS 27 SDK, `SystemLanguageModel` is marked unavailable on watchOS, and the watch does not borrow the iPhone's model on its own.
+- The only Apple model the watch can call is **Private Cloud Compute**, and that needs a managed entitlement Apple grants only to App Store Small Business Program members — i.e. the paid Developer Program. A free personal team can't sign for it.
+- So a free-team build gets AI text two other ways: Claude (no Apple entitlement involved) and the iPhone's on-device model, which DroneCast reaches explicitly through its iPhone companion app. Neither needs anything from Apple beyond free signing.
 
-### Enabling the model later (paid program only)
+### Set up AI briefings (free personal team)
+
+You can do either part or both. With both, Claude goes first and the iPhone backs it up.
+
+**Part 1 — Claude (works anywhere the watch has internet)**
+
+1. Create an Anthropic API key at [platform.claude.com](https://platform.claude.com/settings/keys) (add a little credit and set a low monthly spend limit). A briefing on the default `claude-haiku-5-5` costs a small fraction of a cent.
+2. In Terminal:
+   ```bash
+   cd DroneCast-2.0
+   cp Config/Secrets.example.xcconfig Config/Secrets.xcconfig
+   open -e Config/Secrets.xcconfig
+   ```
+   Replace `sk-ant-REPLACE_ME` with your key (no quotes). `Config/Secrets.xcconfig` is git-ignored, so the key stays out of the repo.
+3. In Xcode: **Product → Clean Build Folder** (⇧⌘K), then run the **DroneCastWatch** scheme on your watch.
+
+The key ends up inside the watch app bundle. That's fine for a build that only lives on your own watch; don't hand this build to anyone else, and revoke the key in the Console if a device is lost. To change models, edit `ClaudeConfig.model` in `Services/ClaudeBriefingGenerator.swift`.
+
+**Part 2 — your iPhone's on-device model (free, no key)**
+
+Needs an iPhone 15 Pro or newer on iOS 27 with **Settings → Apple Intelligence & Siri** turned on and its model downloaded.
+
+1. If an older watch-only DroneCast is on the watch, delete it first. The watch app's bundle ID changed to `com.sguzyayev.dronecast.watchkitapp` (a companion's watch app ID must start with the iPhone app's), so the old copy would sit beside the new one. Your thresholds reset once.
+2. In Xcode, pick the **DroneCastPhone** scheme and your iPhone, and run. This installs the iPhone app and, through it, the watch app. If the watch app doesn't appear, open the **Watch** app on the iPhone → scroll to **DroneCast** → **Install**.
+3. On the iPhone, the DroneCast screen should say **On-device model ready**. Tap **Test a sample briefing** to see the model write one.
+4. Open DroneCast on the watch. With no Claude key (or no internet), Settings → Briefing should read **iPhone (Apple Intelligence)** once a briefing has been written.
+
+The iPhone app doesn't need to stay open: iOS wakes it in the background for each request. It does need to be in Bluetooth/Wi-Fi range of the watch.
+
+**Free-team housekeeping:** personal-team provisioning expires after **7 days** — re-run from Xcode weekly (both apps if you use the iPhone part). The iPhone app and new watch IDs use 3 of your 10 App IDs per week. The first run on a new iPhone needs **Settings → General → VPN & Device Management → trust your developer certificate**, and iOS asks you to enable **Developer Mode**.
+
+### What the settings line means
+
+| Settings → Briefing says | Meaning |
+|---|---|
+| Claude (Anthropic API) | Claude wrote the current briefing |
+| iPhone (Apple Intelligence) | Your iPhone's on-device model wrote it |
+| Template — No Claude API key set | No key and no iPhone app installed |
+| Template — iPhone not reachable | iPhone app installed but out of range, and Claude isn't set up |
+| Template — AI error | A model was tried and failed (bad key, no internet, iPhone model not ready) |
+| Template — AI text failed checks | Every model's text changed a number or the verdict, so it was discarded |
+
+### Enabling Private Cloud Compute later (paid program only)
 
 1. Enrol in the App Store Small Business Program and request the Private Cloud Compute entitlement at [developer.apple.com/private-cloud-compute](https://developer.apple.com/private-cloud-compute/).
-2. Add the entitlement to the **app** target (not the widget).
-3. Flip `BriefingConfig.useCloudModel` to `true`.
+2. Add the entitlement to the **watch app** target (not the widget).
+3. Flip `BriefingConfig.useCloudModel` to `true`. PCC joins the chain after Claude and the iPhone.
 
-The **AI Briefing** toggle in Settings turns the model off at runtime at any time; briefings then come from the template.
+The **AI Briefing** toggle in Settings turns every model off at runtime; briefings then come from the template.
 
 ### What hasn't been verified
 
-- Real Private Cloud Compute responses: output quality, latency on cellular, quota behaviour, and how often the guard rejects real output. None of this can run without the entitlement.
+- A live Claude request from a real watch (the request and response handling is unit-tested against canned API JSON).
+- The watch ⇄ iPhone round trip on real hardware, including how quickly iOS wakes the iPhone app in the background and whether iOS rate-limits background on-device generation.
+- Real Private Cloud Compute responses (needs the entitlement).
 - Siri invoking "Can I fly with DroneCast" by voice on a physical watch, and how the Flight Briefing complication renders on real watch faces.
 
 ## Known modelling limits
