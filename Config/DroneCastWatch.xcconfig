@@ -1,0 +1,9 @@
+// DroneCast watch app build settings.
+//
+// CLAUDE_API_KEY feeds the DCClaudeAPIKey Info.plist entry that
+// ClaudeBriefingGenerator reads. Empty by default; put your real key in
+// Config/Secrets.xcconfig (git-ignored) — copy Secrets.example.xcconfig.
+// With no key, AI briefings come from the iPhone's on-device model.
+
+CLAUDE_API_KEY =
+#include? "Secrets.xcconfig"

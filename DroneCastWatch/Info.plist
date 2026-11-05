@@ -22,8 +22,12 @@
 	<string>1</string>
 	<key>WKApplication</key>
 	<true/>
-	<key>WKWatchOnly</key>
+	<key>WKCompanionAppBundleIdentifier</key>
+	<string>$(COMPANION_BUNDLE_IDENTIFIER)</string>
+	<key>WKRunsIndependentlyOfCompanionApp</key>
 	<true/>
+	<key>DCClaudeAPIKey</key>
+	<string>$(CLAUDE_API_KEY)</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>DroneCast uses your location to fetch hyperlocal weather for flight condition scoring.</string>
 </dict>

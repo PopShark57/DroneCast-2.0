@@ -12,9 +12,11 @@
 # Weather data comes from Open-Meteo by default — no WeatherKit entitlement,
 # so free personal teams can sign. See README "Upgrading to WeatherKit".
 #
-# AI Briefing (2.0) likewise ships without the Private Cloud Compute
-# entitlement; every briefing is the deterministic template until
-# BriefingConfig.useCloudModel is flipped. See README "AI Briefing".
+# AI Briefing: the watch asks Claude (Anthropic API key in
+# Config/Secrets.xcconfig, git-ignored), then the DroneCastPhone companion's
+# on-device Apple Intelligence model, then falls back to the template.
+# Private Cloud Compute stays off (paid-program entitlement). See README
+# "AI Briefing".
 
 name: DroneCast
 
@@ -22,6 +24,7 @@ options:
   bundleIdPrefix: com.sguzyayev
   deploymentTarget:
     watchOS: "27.0"
+    iOS: "27.0"
   createIntermediateGroups: true
 
 settings:
@@ -29,18 +32,43 @@ settings:
     SWIFT_VERSION: "6.0"
     MARKETING_VERSION: "2.0"
     CURRENT_PROJECT_VERSION: "1"
-    # DEVELOPMENT_TEAM: "YOURTEAMID"
+    DEVELOPMENT_TEAM: "7RLDYXQTNX"   # your (Personal Team)
+    CODE_SIGN_STYLE: Automatic
 
 targets:
+
+  # iPhone companion: lends the watch its on-device Apple Intelligence
+  # model over WatchConnectivity, and carries the watch app on install.
+  DroneCastPhone:
+    type: application
+    platform: iOS
+    sources:
+      - path: DroneCastPhone
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast
+        INFOPLIST_FILE: DroneCastPhone/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        TARGETED_DEVICE_FAMILY: "1"
+    dependencies:
+      - target: DroneCastWatch
+    scheme: {}
 
   DroneCastWatch:
     type: application
     platform: watchOS
     sources:
       - path: DroneCastWatch
+      - path: Shared
+    configFiles:
+      Debug: Config/DroneCastWatch.xcconfig
+      Release: Config/DroneCastWatch.xcconfig
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast
+        # A companion's watch app ID must start with the iPhone app's.
+        PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast.watchkitapp
+        COMPANION_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast
         INFOPLIST_FILE: DroneCastWatch/Info.plist
         GENERATE_INFOPLIST_FILE: NO
         CODE_SIGN_ENTITLEMENTS: DroneCastWatch/DroneCastWatch.entitlements
@@ -66,7 +94,7 @@ targets:
       - path: DroneCastWatch/Briefing
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast.widgets
+        PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast.watchkitapp.widgets
         INFOPLIST_FILE: DroneCastWidgets/Info.plist
         GENERATE_INFOPLIST_FILE: NO
         CODE_SIGN_ENTITLEMENTS: DroneCastWidgets/DroneCastWidgets.entitlements
@@ -83,6 +111,9 @@ targets:
       - path: DroneCastWatch/Domain
       - path: DroneCastWatch/Persistence
       - path: DroneCastWatch/Briefing
+      # Claude request/response handling is plain Foundation too.
+      - path: DroneCastWatch/Services/ClaudeBriefingGenerator.swift
+      - path: Shared/BriefingPrompt.swift
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.sguzyayev.dronecast.tests

@@ -127,7 +127,8 @@ final class BriefingService {
             fallbackReason: nil,
             verdict: facts.verdict,
             profileID: facts.aircraftID,
-            snapshotTimestamp: snapshotTimestamp)
+            snapshotTimestamp: snapshotTimestamp,
+            provider: draft.provider)
         store(briefing, facts: facts, modelSettled: true)
         return briefing
     }

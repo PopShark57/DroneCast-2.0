@@ -99,12 +99,17 @@ final class FlightStore {
             WeatherConfig.preferWeatherKit ? OpenMeteoProvider() : nil
         self.fallback = fallback ?? defaultFallback
 
-        // Same pattern as WeatherKit: the Private Cloud Compute model needs
-        // an entitlement personal teams can't get, so it's compiled out by
-        // default and every briefing is the deterministic template.
-        let defaultGenerator: (any BriefingGenerating)? =
-            BriefingConfig.useCloudModel ? PCCBriefingGenerator() : nil
-        self.briefingService = BriefingService(generator: briefingGenerator ?? defaultGenerator)
+        // AI briefings try each model in turn, then fall back to the
+        // template: Claude first (watch → Anthropic API, needs a key in
+        // Config/Secrets.xcconfig), then the iPhone companion's on-device
+        // Apple Intelligence model. Private Cloud Compute joins last only
+        // when its paid-program entitlement is enabled.
+        var links: [any BriefingGenerating] = [ClaudeBriefingGenerator(), PhoneBriefingGenerator()]
+        if BriefingConfig.useCloudModel { links.append(PCCBriefingGenerator()) }
+        self.briefingService = BriefingService(
+            generator: briefingGenerator ?? ChainedBriefingGenerator(links),
+            // Room for Claude's 9 s network timeout plus an iPhone attempt.
+            timeout: .seconds(20))
 
         // Warm-start from the persisted snapshot (didSet doesn't fire in init).
         let saved = SharedStore.load()
@@ -304,7 +309,7 @@ final class FlightStore {
         guard let briefing else { return "Waiting for weather" }
         switch briefing.source {
         case .ai:
-            return "Apple Intelligence (Private Cloud Compute)"
+            return briefing.provider?.label ?? "AI"
         case .template:
             switch briefing.fallbackReason {
             case .modelUnavailable(let reason)?: return "Template — \(reason.label)"
